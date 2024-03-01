@@ -81,3 +81,16 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+
+class NGO(models.Model):
+        user = models.ForeignKey(User, on_delete=models.CASCADE)
+        name = models.CharField(max_length=200)
+        requirment = models.CharField(max_length=100)
+        locality = models.CharField(max_length=200)
+        city = models.CharField(max_length=50)
+        address = models.TextField()
+        contact_number = models.CharField(max_length=20)
+
+        def __str__(self):
+            return self.name
+

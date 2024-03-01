@@ -1,0 +1,26 @@
+{% extends 'sneaker/base.html' %}
+{% load static %}
+
+{% block title %}NGO Information{% endblock %}
+
+{% block main-content %}
+<div class="container">
+    <div class="row my-3">
+        {% for ngo in ngos %}
+            <div class="col-md-4 mb-4">
+
+                    <div class="card h-100 shadow ngo-card">
+                         <a href="{% url 'ngo_detail' ngo.id %}" class="ngo-card-link">
+                        <div class="card-body">
+                            <h5 class="card-title">Name : {{ ngo.name }}</h5>
+                            <p class="card-text">Requirement : {{ ngo.requirment }}</p>
+
+                        </div>
+                              </a>
+                    </div>
+
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

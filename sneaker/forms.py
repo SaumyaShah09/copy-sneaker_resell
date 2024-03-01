@@ -55,3 +55,21 @@ class CustomerProfileForm(forms.ModelForm):
             'state':forms.Select(attrs={'class' : 'form-control'}),
             'zipcode':forms.NumberInput(attrs={'class' : 'form-control'}),
         }
+
+
+
+from django import forms
+from .models import NGO
+
+class NGORegistrationForm(forms.ModelForm):
+    class Meta:
+        model = NGO
+        fields = ['name','requirment','locality', 'city', 'address', 'contact_number']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'requirment' : forms.TextInput(attrs={'class':'form-control'}),
+            'locality': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control'}),
+            'contact_number': forms.TextInput(attrs={'class': 'form-control'}),
+        }

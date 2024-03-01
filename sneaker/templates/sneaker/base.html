@@ -55,6 +55,9 @@
         <li class="nav-item">
           <a class="nav-link text-white" href="{% url 'contact' %}">Contact Us</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{% url 'ngo_information' %}">Ngo List</a>
+        </li>
       </ul>
      {% comment %} <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -81,11 +84,15 @@
         </li>
 {% else %}
         <li class="nav-item  mx-2">
+            <a href="{% url 'home' %}" class="nav-link text-white">Home</a>
+        </li>
+        <li class="nav-item  mx-2" >
             <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
         </li>
         <li class="nav-item  mx-2">
             <a href="{% url 'customerregistration' %}" class="nav-link text-white">Registration</a>
         </li>
+
           {% endif %}
       </ul>
   </div>

@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.db.models import Count
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from django.views import View
 from .models import *
-from .forms import CustomerProfileForm ,CustomerRegistrationForm
+from .forms import CustomerProfileForm ,CustomerRegistrationForm , NGORegistrationForm
 from django.contrib import messages
 from django import forms
 
@@ -82,7 +82,42 @@ class updateAddress(View):
         return render(request, 'sneaker/updateAddress.html', locals())
 
 
+class NGORegistrationView(View):
+    def get(self, request):
+        form = NGORegistrationForm()
+        return render(request, 'sneaker/ngoregistration.html', {'form': form})
+
+    def post(self, request):
+        form = NGORegistrationForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            name = form.cleaned_data['name']
+            requirment = form.cleaned_data['requirment']
+            locality = form.cleaned_data['locality']
+            city = form.cleaned_data['city']
+            address = form.cleaned_data['address']
+            contact_number = form.cleaned_data['contact_number']
+
+            ngo = NGO(user=user, name=name,requirment=requirment, locality=locality, city=city, address=address, contact_number=contact_number)
+            ngo.save()
+            messages.success(request, "Congratulations! NGO registration successful")
+            return redirect('home')  # Redirect to wherever you want
+        else:
+            messages.error(request, "Invalid input data")
+            return render(request, 'sneaker/ngoregistration.html', {'form': form})
 
 
 
 
+def ngo_information(request):
+    ngos = NGO.objects.all()
+    return render(request, 'sneaker/ngo_information.html', {'ngos': ngos})
+
+# views.py
+def ngo_detail(request, pk):
+    ngo = NGO.objects.get(pk=pk)
+    return render(request, 'sneaker/ngo_detail.html', {'ngo': ngo})
+
+
+def home(request):
+    return render(request, "sneaker/home.html")

@@ -1,0 +1,26 @@
+{% extends 'sneaker/base.html' %}
+{% load static %}
+
+{% block title %}NGO Detail{% endblock %}
+
+{% block main-content %}
+<div class="container">
+    <div class="row my-3">
+        <div class="container">
+            <!-- NGO information -->
+            <h2>Name : {{ ngo.name }}</h2>
+            <p>Requirement : {{ ngo.requirment }}</p>
+            <p>Locality : {{ ngo.locality }}</p>
+            <p>City: {{ ngo.city }}</p>
+            <p>Address : {{ ngo.address }}</p>
+            <p>Contact-number : {{ ngo.contact_number }}</p>
+            <!-- Other fields -->
+
+            <!-- Back button -->
+            <div class="text-center mt-5 mb-3"> <!-- Center the button and add some margin -->
+                <a href="{% url 'ngo_information' %}" class="btn btn-success">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

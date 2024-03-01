@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_view
 from .forms import *
+from .views import *
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth import views as auth_views
 
@@ -58,7 +59,9 @@ urlpatterns=[
     path('password-reset-complete/',auth_view.PasswordResetCompleteView.as_view(
         template_name='sneaker/password_reset_complete.html')
          , name='password_reset_complete'),
-
-
-
+    path('ngo-information/', views.ngo_information, name='ngo_information'),
+    path('ngoregistration/', NGORegistrationView.as_view(), name='ngoregistration'),
+    path('ngo/<int:pk>/', views.ngo_detail, name='ngo_detail'),
+    path("", views.home, name="home"),
             ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
