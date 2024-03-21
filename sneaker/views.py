@@ -20,13 +20,13 @@ def contact(request):
 
 class Categoryview(View):
     def get(self,request,val):
-        product = Prodcut.objects.filter(category=val)
-        title = Prodcut.objects.filter(category=val).values('title')
+        product = Product.objects.filter(category=val)
+        title = Product.objects.filter(category=val).values('title')
         return render(request,'sneaker/category.html',locals())
 
 class ProductDetail(View):
     def get(self,request,pk):
-        product = Prodcut.objects.get(pk=pk)
+        product = Product.objects.get(pk=pk)
         return render(request,"sneaker/productdetail.html", {'product' : product})
 
 class CustomerRegistrationView(View):
@@ -121,3 +121,17 @@ def ngo_detail(request, pk):
 
 def home(request):
     return render(request, "sneaker/home.html")
+
+# views.py
+from django.shortcuts import render, redirect
+from .forms import ProductForm
+
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')  # Assuming 'home' is the name of your homepage URL pattern
+    else:
+        form = ProductForm()
+    return render(request, 'sneaker/add_product.html', {'form': form})

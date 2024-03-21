@@ -3,7 +3,7 @@ from . models import *
 # Register your models here.
 
 
-@admin.register(Prodcut)
+@admin.register(Product)
 class ProductModelAdmin(admin.ModelAdmin):
     list_display = ['id','title','email','category','product_image']
 

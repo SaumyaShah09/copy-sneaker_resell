@@ -48,7 +48,7 @@ urlpatterns=[
     path('password-reset/', auth_view.PasswordResetView.as_view(
         template_name='sneaker/password_reset.html',form_class=MyPasswordResetForm)
          ,name='password_reset'),
-
+    path('add/', views.add_product, name='add_product'),
     path('password-reset/done/', auth_view.PasswordResetDoneView.as_view(
         template_name='sneaker/password_reset_done.html'),name='password_reset_done'),
 
@@ -62,6 +62,7 @@ urlpatterns=[
     path('ngo-information/', views.ngo_information, name='ngo_information'),
     path('ngoregistration/', NGORegistrationView.as_view(), name='ngoregistration'),
     path('ngo/<int:pk>/', views.ngo_detail, name='ngo_detail'),
+
     path("", views.home, name="home"),
             ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

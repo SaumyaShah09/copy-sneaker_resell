@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import *
 from django.contrib.auth.models import User
 
-from .models import Customer
+from .models import Customer,Product
 
 
 class LoginForm(AuthenticationForm):
@@ -73,3 +73,11 @@ class NGORegistrationForm(forms.ModelForm):
             'address': forms.Textarea(attrs={'class': 'form-control'}),
             'contact_number': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+from .models import Product
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['title', 'description', 'email', 'prodapp', 'category', 'product_image']
