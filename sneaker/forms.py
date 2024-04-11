@@ -59,21 +59,34 @@ class CustomerProfileForm(forms.ModelForm):
 
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .models import NGO
 
-class NGORegistrationForm(forms.ModelForm):
-    class Meta:
-        model = NGO
-        fields = ['name','requirment','locality', 'city', 'address', 'contact_number']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'requirment' : forms.TextInput(attrs={'class':'form-control'}),
-            'locality': forms.TextInput(attrs={'class': 'form-control'}),
-            'city': forms.TextInput(attrs={'class': 'form-control'}),
-            'address': forms.Textarea(attrs={'class': 'form-control'}),
-            'contact_number': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+from django.contrib.auth.forms import UserCreationForm
+from .models import NGO
 
+from django.shortcuts import render, redirect
+from django.views import View
+
+
+class NGORegistrationView(View):
+    def get(self, request):
+        ngo_form = NGORegistrationForm()
+        user_form = UserForm()
+        return render(request, 'registration/ngo_registration.html', {'ngo_form': ngo_form, 'user_form': user_form})
+
+    def post(self, request):
+        ngo_form = NGORegistrationForm(request.POST)
+        user_form = UserForm(request.POST)
+        if ngo_form.is_valid() and user_form.is_valid():
+            user = user_form.save()  # Save the user
+            ngo = ngo_form.save(commit=False)
+            ngo.user = user
+            ngo.set_password(user_form.cleaned_data['password'])  # Set the password
+            ngo.save()
+            return redirect('login')  # Redirect to login page after successful registration
+        return render(request, 'registration/ngo_registration.html', {'ngo_form': ngo_form, 'user_form': user_form})
 
 from .models import Product
 
@@ -81,3 +94,19 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['title', 'description', 'email', 'prodapp', 'category', 'product_image']
+
+
+from django import forms
+from .models import NGO
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+class NGORegistrationForm(forms.ModelForm):
+    class Meta:
+        model = NGO
+        fields = ['name', 'requirement', 'locality', 'city', 'address', 'contact_number']
+
+class UserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']

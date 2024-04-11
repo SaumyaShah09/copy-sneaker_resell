@@ -1,51 +1,38 @@
 {% extends 'sneaker/base.html' %}
+{% load static %}
 {% block title %}Add Product{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* Custom CSS styles for the add product form */
-    .container {
-        margin-top: 50px;
+    /* Custom CSS styles to make input boxes round */
+    input[type="text"],
+    textarea,
+    select {
+        border-radius: 10px; /* Adjust the border radius as needed */
+        padding: 10px; /* Add padding to improve appearance */
+        border: 1px solid #ccc; /* Add border to input fields */
+        margin-bottom: 15px; /* Add margin bottom for spacing */
+        width: 100%; /* Ensure input fields take up full width */
+        box-sizing: border-box; /* Include padding and border in width */
     }
-    .form-group {
-        margin-bottom: 20px;
-    }
-    .form-group label {
-        font-weight: bold;
-    }
-    .form-group input[type="text"],
-    .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    .form-group select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fff;
-        cursor: pointer;
-    }
-    .form-group input[type="file"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fff;
-    }
-    .form-group input[type="submit"] {
+
+    /* Style for submit button */
+    input[type="submit"] {
         padding: 10px 20px;
         background-color: #007bff;
         color: #fff;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        width: 100%; /* Ensure button takes up full width */
+        box-sizing: border-box; /* Include padding and border in width */
     }
-    .form-group input[type="submit"]:hover {
+
+    input[type="submit"]:hover {
         background-color: #0056b3;
     }
+
+    /* Style for error messages */
     .text-danger {
         color: red;
     }

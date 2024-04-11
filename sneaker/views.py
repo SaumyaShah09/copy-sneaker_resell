@@ -1,87 +1,88 @@
-from django.shortcuts import render
-from django.db.models import Count
-from django.http import HttpResponse
-from django.shortcuts import render , redirect
-from django.views import View
-from .models import *
-from .forms import CustomerProfileForm ,CustomerRegistrationForm , NGORegistrationForm
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django import forms
+from django.views import View
+from .models import Product, Customer, NGO
+from .forms import CustomerProfileForm, CustomerRegistrationForm, NGORegistrationForm, ProductForm
 
-# Create your views here.
+# Home page view
 def home(request):
     return render(request, "sneaker/home.html")
 
+# About page view
 def about(request):
     return render(request, "sneaker/about.html")
 
+# Contact page view
 def contact(request):
     return render(request, "sneaker/contact.html")
 
-class Categoryview(View):
-    def get(self,request,val):
-        product = Product.objects.filter(category=val)
-        title = Product.objects.filter(category=val).values('title')
-        return render(request,'sneaker/category.html',locals())
+# View for displaying products by category
+class CategoryView(View):
+    def get(self, request, val):
+        products = Product.objects.filter(category=val)
+        return render(request, 'sneaker/category.html', {'products': products})
 
-class ProductDetail(View):
-    def get(self,request,pk):
+# View for displaying product details
+class ProductDetailView(View):
+    def get(self, request, pk):
         product = Product.objects.get(pk=pk)
-        return render(request,"sneaker/productdetail.html", {'product' : product})
+        return render(request, "sneaker/productdetail.html", {'product': product})
 
+# View for customer registration
 class CustomerRegistrationView(View):
-    def get(self,request):
+    def get(self, request):
         form = CustomerRegistrationForm()
-        return render(request, 'sneaker/customerregistration.html',locals())
-    def post(self,request):
+        return render(request, 'sneaker/customerregistration.html', {'form': form})
+
+    def post(self, request):
         form = CustomerRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request,"Congratulations! User successfully created")
-        #else:
-            #messages.error(request,"Invalid Input Data")
-        return render(request,'sneaker/customerregistration.html',locals())
+            messages.success(request, "Congratulations! User successfully created")
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid Input Data")
+            return render(request, 'sneaker/customerregistration.html', {'form': form})
 
-
-class Profileview(View):
+# View for customer profile
+class ProfileView(View):
     def get(self, request):
         form = CustomerProfileForm()
-        return render(request, 'sneaker/profile.html', locals())
+        return render(request, 'sneaker/profile.html', {'form': form})
 
     def post(self, request):
-        print(request.POST)  # Print out the POST data for debugging
         form = CustomerProfileForm(request.POST)
         if form.is_valid():
             user = request.user
-            name = form.cleaned_data['name']
-            locality = form.cleaned_data['locality']
-            city = form.cleaned_data['city']
-            mobile = form.cleaned_data['mobile']
-            state = form.cleaned_data['state']
-            zipcode = form.cleaned_data['zipcode']
-
-            reg = Customer(user=user, name=name, locality=locality, city=city, mobile=mobile,
-                           state=state, zipcode=zipcode)
-            reg.save()
+            profile_data = form.cleaned_data
+            profile_data['user'] = user
+            Customer.objects.create(**profile_data)
             messages.success(request, "Congratulations! Profile saved successfully")
         else:
             messages.warning(request, "Invalid Input Data")
-        return render(request, 'sneaker/profile.html', locals())
+        return redirect('home')
 
-
+# View for displaying and updating customer addresses
 def address(request):
-    add=Customer.objects.filter(user=request.user)
-    return render(request, 'sneaker/address.html',locals())
+    addresses = Customer.objects.filter(user=request.user)
+    return render(request, 'sneaker/address.html', {'addresses': addresses})
 
-class updateAddress(View):
-    def get(self,request,pk):
-        form=CustomerProfileForm()
-        return render(request, 'sneaker/updateAddress.html',locals())
-    def post(self,request,pk):
+class UpdateAddress(View):
+    def get(self, request, pk):
+        form = CustomerProfileForm()
+        return render(request, 'sneaker/updateAddress.html', {'form': form})
+
+    def post(self, request, pk):
         form = CustomerProfileForm(request.POST)
-        return render(request, 'sneaker/updateAddress.html', locals())
+        if form.is_valid():
+            # Update customer address logic here
+            messages.success(request, "Address updated successfully")
+            return redirect('address')
+        else:
+            messages.error(request, "Invalid Input Data")
+            return render(request, 'sneaker/updateAddress.html', {'form': form})
 
-
+# View for NGO registration
 class NGORegistrationView(View):
     def get(self, request):
         form = NGORegistrationForm()
@@ -90,48 +91,31 @@ class NGORegistrationView(View):
     def post(self, request):
         form = NGORegistrationForm(request.POST)
         if form.is_valid():
-            user = request.user
-            name = form.cleaned_data['name']
-            requirment = form.cleaned_data['requirment']
-            locality = form.cleaned_data['locality']
-            city = form.cleaned_data['city']
-            address = form.cleaned_data['address']
-            contact_number = form.cleaned_data['contact_number']
-
-            ngo = NGO(user=user, name=name,requirment=requirment, locality=locality, city=city, address=address, contact_number=contact_number)
-            ngo.save()
+            form.save()
             messages.success(request, "Congratulations! NGO registration successful")
-            return redirect('home')  # Redirect to wherever you want
+            return redirect('home')
         else:
             messages.error(request, "Invalid input data")
             return render(request, 'sneaker/ngoregistration.html', {'form': form})
 
-
-
-
+# View for displaying NGO information
 def ngo_information(request):
     ngos = NGO.objects.all()
     return render(request, 'sneaker/ngo_information.html', {'ngos': ngos})
 
-# views.py
+# View for displaying NGO details
 def ngo_detail(request, pk):
     ngo = NGO.objects.get(pk=pk)
     return render(request, 'sneaker/ngo_detail.html', {'ngo': ngo})
 
-
-def home(request):
-    return render(request, "sneaker/home.html")
-
-# views.py
-from django.shortcuts import render, redirect
-from .forms import ProductForm
-
+# View for adding a product
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('home')  # Assuming 'home' is the name of your homepage URL pattern
+            return redirect('home')
     else:
         form = ProductForm()
     return render(request, 'sneaker/add_product.html', {'form': form})
+

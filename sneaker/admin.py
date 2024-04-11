@@ -13,4 +13,4 @@ class CustomerModelAdmin(admin.ModelAdmin):
 
 @admin.register(NGO)
 class NGOModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'requirment' ,'name', 'locality', 'city', 'address', 'contact_number']
+    list_display = ['id', 'requirement' ,'name', 'locality', 'city', 'address', 'contact_number']

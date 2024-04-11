@@ -21,11 +21,11 @@ urlpatterns=[
     path("", views.home),
     path("about/", views.about,name="about"),
     path("contact/", views.contact,name="contact"),
-    path("category/<slug:val>", views.Categoryview.as_view(),name="category"),
-    path("product-detail/<int:pk>", views.ProductDetail.as_view(),name="product-detail"),
-    path("profile/",views.Profileview.as_view(),name="profile"),
+    path("category/<slug:val>", views.CategoryView.as_view(),name="category"),
+    path("product-detail/<int:pk>", views.ProductDetailView.as_view(),name="product-detail"),
+    path("profile/",views.ProfileView.as_view(),name="profile"),
     path("address/",views.address,name="address"),
-    path("updateAddress/<int:pk>", views.updateAddress.as_view(), name="updateAddress"),
+    path("updateAddress/<int:pk>", views.UpdateAddress.as_view(), name="updateAddress"),
 
     #login authentication
     path("registration/", views.CustomerRegistrationView.as_view(), name="customerregistration"),
@@ -62,7 +62,6 @@ urlpatterns=[
     path('ngo-information/', views.ngo_information, name='ngo_information'),
     path('ngoregistration/', NGORegistrationView.as_view(), name='ngoregistration'),
     path('ngo/<int:pk>/', views.ngo_detail, name='ngo_detail'),
-
     path("", views.home, name="home"),
             ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -1,31 +1,31 @@
 {% extends 'sneaker/base.html' %}
 {% load static %}
-{% block title %} category {% endblock %}
+{% block title %}Category{% endblock %}
 
 {% block main-content %}
 <div class="container my-5">
     <div class="row">
         <div class="col-sm-3">
-        <div class="list-group">
-            {% for val in title %}
-                <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                {{ val.title }}
-                </a>
-            {% endfor %}
-        </div>
+            <div class="list-group">
+                {% for category in categories %}
+                    <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                        {{ category.title }}
+                    </a>
+                {% endfor %}
+            </div>
         </div>
         <div class="col-sm-9">
-            {% for prod in product %}
+            {% for product in products %}
                 <div class="col text-center mb-4">
-                    <a href="{% url 'product-detail' prod.id %}" class="btn">
+                    <a href="{% url 'product-detail' pk=product.id %}" class="btn">
                         <div>
-                            <img src="{{ prod.product_image.url }} " width="300px" height="200px" alt="">
-                            <div class="fw-bold">{{ prod.title }}</div>
+                            <img src="{{ product.product_image.url }}" width="300px" height="200px" alt="">
+                            <div class="fw-bold">{{ product.title }}</div>
                             <div class="fw-bold text-danger">
-{% comment %}
-                                Rs.{{ prod.discounted_price}}/-
-{% endcomment %}
-                                <small class="fw-light text-decoration-line-through">{{ prod.selling_price }}</small>
+                                {# Include the discounted price if needed #}
+                                {# Rs.{{ product.discounted_price }}/-
+                                #}
+                                <small class="fw-light text-decoration-line-through">{{ product.selling_price }}</small>
                             </div>
                         </div>
                     </a>
@@ -33,6 +33,5 @@
             {% endfor %}
         </div>
     </div>
-
 </div>
 {% endblock %}

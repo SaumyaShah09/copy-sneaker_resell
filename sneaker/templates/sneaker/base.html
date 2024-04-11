@@ -11,7 +11,20 @@
     <link rel="stylesheet" href="{% static 'sneaker/css/owl.carousel.min.css' %}">
     <link rel="stylesheet" href="{% static 'sneaker/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'sneaker/css/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <title>Kicksy {% block title %}{% endblock %}</title>
+    <style>
+    /* Custom CSS to adjust the alignment of the Products dropdown */
+    .dropdown-toggle.text-white {
+        padding: 0.5rem 1rem; /* Adjust padding as needed */
+        line-height: inherit; /* Inherit line-height from parent */
+        display: inline-block; /* Display as inline-block */
+        margin-bottom: 0; /* Remove any bottom margin */
+    }
+</style>
+
+
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-success">
@@ -30,23 +43,19 @@
         </li>
         {% endcomment %}
         {% if request.user.is_authenticated %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Products
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'category' 'F' %}">Fashion</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'DE' %}">Daily Essentials</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'Home' %}">Home Decor</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'El' %}">Electronics</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'Books' %}">Books</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'Outdoor' %}">Outdoor</a></li>
-          </ul>
-
-          </a>
-        </li>
-
-
+<div class="dropdown">
+    <a class="dropdown-toggle text-white" href="#" role="button" id="productsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Products
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+        <li><a class="dropdown-item" href="{% url 'category' 'F' %}">Fashion</a></li>
+        <li><a class="dropdown-item" href="{% url 'category' 'DE' %}">Daily Essentials</a></li>
+        <li><a class="dropdown-item" href="{% url 'category' 'Home' %}">Home Decor</a></li>
+        <li><a class="dropdown-item" href="{% url 'category' 'El' %}">Electronics</a></li>
+        <li><a class="dropdown-item" href="{% url 'category' 'Books' %}">Books</a></li>
+        <li><a class="dropdown-item" href="{% url 'category' 'Outdoor' %}">Outdoor</a></li>
+    </ul>
+</div>
 
         <li class="nav-item">
           <a class="nav-link text-white" href="{% url 'ngo_information' %}">Ngo List</a>
